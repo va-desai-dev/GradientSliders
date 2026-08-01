@@ -13,7 +13,7 @@ SwiftUI sliders for integer scales that need a clear visual direction.
   </tr>
   <tr>
     <td><img src="GradientSliders_Examples.png" width="100%" alt="Bipolar Sliders Preview (Dark)"></td>
-    <td><img src="GradientSliders_Examples_Light.png" width="100%" alt="Bipolar Sliders Preview (Light)"></td>
+    <td><img src="GradientSlider_Examples_Light.png" width="100%" alt="Bipolar Sliders Preview (Light)"></td>
   </tr>
 </table>
 
