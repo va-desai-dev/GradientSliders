@@ -4,9 +4,9 @@ SwiftUI sliders for integer scales that need a clear visual direction.
 
 `UnipolarSlider` is for one-direction values, such as `0...100`. `BipolarSlider` is for centered values, such as `-100...100`, where the meaning changes on either side of zero. The gradient is aesthetic and informational: it makes the direction of the scale easier to scan, but the core reason for the package is the distinction between unipolar and bipolar value models.
 
-![Dark mode examples of bipolar and unipolar GradientSliders](GradientSliders_Examples.png)
+<img src="GradientSliders_Examples.png" width="50%" alt="Bipolar Sliders Preview">
 
-![Light mode examples of bipolar and unipolar GradientSliders](GradientSlider_Examples_Light.png)
+<img src="GradientSliders_Examples_Light.png" width="50%" alt="Bipolar Sliders LightPreview">
 
 ## Why Two Sliders?
 
@@ -101,8 +101,6 @@ Available typefaces:
 - `.mono`
 
 Use `hideValueLabel: true` when the exact number should not dominate the decision and the user only needs to choose an approximate position.
-
-![GradientSliders light examples](GradientSlider_Examples_Light.png)
 
 ## Requirements
 
