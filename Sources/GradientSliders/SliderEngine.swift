@@ -54,6 +54,27 @@ struct GradientSliderTrack: View {
     // Baseline tracker storage
     @State private var touchDownValue: Double = 0.0
     
+    // Turns a raw dragged value into the final snapped, clamped result. Shared by
+    // both the live drag and the release handler so the snapping rules live in one
+    // place. A faint magnetic pull toward zero applies only when zero sits *inside*
+    // the range (bipolar sliders); its deadzone scales with `step` so it never
+    // swallows reachable values on fine-grained continuous sliders.
+    private func resolve(_ raw: Double) -> Double {
+        let zeroIsInterior = range.lowerBound < 0 && range.upperBound > 0
+        let zeroDeadzone = (step > 0 ? step : 1) * 0.15
+
+        let snapped: Double
+        if zeroIsInterior && abs(raw) < zeroDeadzone {
+            snapped = 0
+        } else if step > 0 {
+            snapped = (raw / step).rounded() * step
+        } else {
+            snapped = raw
+        }
+
+        return min(max(range.lowerBound, snapped), range.upperBound)
+    }
+
     var body: some View {
         GeometryReader { proxy in
             let width = proxy.size.width
@@ -125,23 +146,13 @@ struct GradientSliderTrack: View {
                         }
                         
                         guard usable > 0 else { return }
-                        
+
                         // Drag anywhere tracking via translation delta
                         let deltaX = drag.translation.width
                         let deltaValue = (Double(deltaX / usable) * span)
                         let rawValue = touchDownValue + deltaValue
-                        
-                        var processedValue: Double = 0.0
-                        
-                        // MICROSCOPIC APPLE SNAP ENGINE:
-                        // The zero pull is reduced to a faint line. 1 and -1 will feel smooth and free.
-                        if abs(rawValue) < 0.15 && range.contains(0.0) {
-                            processedValue = 0.0
-                        } else {
-                            processedValue = step > 0 ? (rawValue / step).rounded() * step : rawValue
-                        }
-                        
-                        value = min(max(range.lowerBound, processedValue), range.upperBound)
+
+                        value = resolve(rawValue)
                     }
                     .onEnded { drag in
                         guard usable > 0 else { return }
@@ -160,18 +171,9 @@ struct GradientSliderTrack: View {
                             let kineticFlingDistance = Double(horizontalVelocity / usable) * span * decelerationRate
                             calculatedValue += kineticFlingDistance
                         }
-                        
-                        var processedValue: Double = 0.0
-                        
-                        // Microscopic snap validation on release
-                        if abs(calculatedValue) < 0.15 && range.contains(0.0) {
-                            processedValue = 0.0
-                        } else {
-                            processedValue = step > 0 ? (calculatedValue / step).rounded() * step : calculatedValue
-                        }
-                        
-                        let finalRestingValue = min(max(range.lowerBound, processedValue), range.upperBound)
-                        
+
+                        let finalRestingValue = resolve(calculatedValue)
+
                         // Snappy native critical spring finish
                         withAnimation(.spring(response: 0.22, dampingFraction: 1.0, blendDuration: 0)) {
                             value = finalRestingValue

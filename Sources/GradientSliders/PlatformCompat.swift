@@ -51,3 +51,15 @@ extension Color {
         #endif
     }
 }
+
+extension View {
+    /// Disables autocapitalization on iOS; a no-op on macOS, which has no such
+    /// text-input modifier. Keeps editable slider name fields lowercase-friendly.
+    @ViewBuilder func noAutocap() -> some View {
+        #if os(iOS)
+        self.textInputAutocapitalization(.never)
+        #else
+        self
+        #endif
+    }
+}

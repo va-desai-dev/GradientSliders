@@ -113,8 +113,9 @@ public enum TypeFaceSelections: String, CaseIterable, Identifiable, Sendable {
 }
 
     // NEW: App-wide muted secondary label.
-struct CreatorSecondaryLabel: View {
+struct SliderValueText: View {
     @Environment(\.typography) private var typography
+    @Environment(\.sliderPalette) private var sliderforeground
     let label: String
 
     init(_ label: String) {
@@ -123,49 +124,64 @@ struct CreatorSecondaryLabel: View {
 
     var body: some View {
         Text(label)
-            .font(typography.label)
-            .foregroundStyle(.secondary)
+            .font(typography.label.monospacedDigit())
+            .foregroundStyle(sliderforeground.valueColor.opacity(0.76))
     }
 }
 
-    // NEW: App-wide creator section title.
-struct CreatorSectionTitle: View {
+struct SliderSecondaryText: View {
     @Environment(\.typography) private var typography
-    let title: String
-
-    init(_ title: String) { self.title = title }
-
-    var body: some View {
-        Text(title)
-            .font(typography.title)
-            .foregroundStyle(.primary)
-            .padding(.bottom, 4)
-    }
-}
-
-    // NEW: App-wide minimal creator divider.
-struct CreatorDivider: View {
-    var body: some View {
-        Rectangle()
-            .fill(Color.platformSeparator)
-            .frame(height: 0.5)
-            .padding(.vertical, 4)
-    }
-}
-    // NEW: App-wide creator field label.
-struct CreatorFieldLabel: View {
-    @Environment(\.typography) private var typography
+    @Environment(\.sliderPalette) private var sliderforeground
     let label: String
-    let required: Bool
 
-    init(_ label: String, required: Bool = false) {
+    init(_ label: String) {
         self.label = label
-        self.required = required
     }
 
     var body: some View {
-        Text(required ? "\(label) *" : label)
-            .font(typography.heading)
-            .foregroundStyle(.primary)
+        Text(label)
+            .font(typography.caption.monospaced())
+            .foregroundStyle(sliderforeground.valueColor.opacity(0.76))
     }
 }
+
+    // NEW: App-wide creator field label.
+struct SliderLabelText: View {
+    @Environment(\.typography) private var typography
+    @Environment(\.sliderPalette) private var sliderforeground
+    let label: String
+
+    init(_ label: String) {
+        self.label = label
+    }
+
+    var body: some View {
+        Text(label)
+            .font(typography.heading)
+            .foregroundStyle(sliderforeground.labelColor)
+    }
+}
+
+struct SliderTextField: ViewModifier {
+    @Environment(\.typography) private var typography
+    @Environment(\.sliderPalette) private var palette
+
+    func body(content: Content) -> some View {
+        content
+            .padding(.horizontal, 12)
+            .padding(.vertical, 6)
+            .background(palette.textentryfill.opacity(0.34), in: RoundedRectangle(cornerRadius: 8, style: .continuous)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                    .stroke(palette.strokeborder.opacity(0.5), lineWidth: 0.75)
+            )
+    }
+}
+
+extension View {
+    func sliderTextFieldStyle() -> some View {
+        modifier(SliderTextField())
+    }
+}
+
