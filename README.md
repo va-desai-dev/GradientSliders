@@ -116,8 +116,6 @@ Use `hideValueLabel: true` when the exact number should not dominate the decisio
 - iOS 26+
 - Swift 6.3+
 
-## License
-
-Source code is available for non-commercial use under the PolyForm Noncommercial License 1.0.0. See [LICENSE.md](LICENSE.md) for details.
-
-Commercial use requires prior written permission.
+## License & Authorship
+### Copyright (c) 2026 Vedant A. Desai. All rights reserved.
+Source code is available for use under the ApacheLicense v2.0 (ASF, 2004). See [LICENSE.md](LICENSE.md) for details.
