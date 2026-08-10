@@ -87,7 +87,7 @@ struct GradientSliderTrack: View {
             ZStack(alignment: .leading) {
                 Group {
                     Capsule()
-                        .fill(Color(.systemGray5).opacity(0.5))
+                        .fill(Color.sliderTrackBackground.opacity(0.5))
                     gradient.opacity(1).saturation(2)
                         .mask(alignment: .leading) {
                             SliderFillShape(

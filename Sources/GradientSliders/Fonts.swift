@@ -147,7 +147,7 @@ struct CreatorSectionTitle: View {
 struct CreatorDivider: View {
     var body: some View {
         Rectangle()
-            .fill(Color(.separator))
+            .fill(Color.platformSeparator)
             .frame(height: 0.5)
             .padding(.vertical, 4)
     }
